@@ -1,0 +1,105 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block extend_head %}
+
+<script src='https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}'></script>
+
+{% endblock %}
+
+{% block extend_nav %} 
+
+<ul class="sidenav">
+  <li><a class="active" href="{% url 'main:route' %}">Roteirizador</a></li>
+</ul>
+
+{% endblock %}
+
+
+{% block content %}
+
+<h3>Calculadora de Rotas</h3>
+
+<div class="field">
+
+    <label for="start">Endereço de Origem</label>
+    <input type="text" placeholder="*Digite o endereço" id="start" name="start">
+
+    <input type="hidden" class="geo" id="id-lat-s" value="">
+    <input type="hidden" class="geo" id="id-long-s" value="">
+
+    <label for="end">Endereço de Destino</label>
+    <input type="text" placeholder="*Digite o endereço" id="end" name="end">
+
+   <input type="hidden" class="geo" id="id-lat-e" value="">
+   <input type="hidden" class="geo" id="id-long-e" value="">
+
+</div>
+
+
+
+<div class="container" id="dynamicInput">
+    <h3>Insira aqui todas as paradas da rota:</h3>
+
+
+</div>
+
+<input type="button" class="addbutton" value="Adicionar parada" onclick="addWaypoint('dynamicInput')">
+<input type="button" class="calcbutton" id="getdir" value="Melhor Rota!">
+
+<div id="map_canvas"></div>
+
+
+<div class="field">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Dados do trajeto</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Partida</td>
+        <td>{{directions.origin}}</td>
+      </tr>
+      <tr>
+        <td>Destino Final</td>
+        <td>{{directions.destination}}</td>
+      </tr>
+      <tr>
+        <td>Duração Total</td>
+        <td>{{directions.duration}}</td>
+      </tr>
+      <tr>
+        <td>Distância Total</td>
+        <td>{{directions.distance}}</td> <!-- {{var}} serve para por uma variável no html -->
+      </tr>
+      <tr>
+        <td>Link do Google Maps</td>
+        <td id="dir-toggle">click <a href="javascript:void(0)" onclick="DirectionsToggle()">here</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</div>
+
+
+{% endblock %}
+
+{% block extend_footer %}
+
+
+<script type="text/javascript">
+
+    var google_api_key = "{{google_api_key|safe}}";
+
+  </script>
+
+  <script src="{% static 'google_places.js' %}"></script>
+
+
+{% endblock %}
